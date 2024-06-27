@@ -1,0 +1,11 @@
+/Users/liuchengwen/Desktop/liuchengwen/project/lcw-cloud/lcw-cloud-starters/lcw-cloud-feign-starter/src/main/java/com/lcw/cloud/feign/hystrix/HttpHeadersContextHolder.java
+/Users/liuchengwen/Desktop/liuchengwen/project/lcw-cloud/lcw-cloud-starters/lcw-cloud-feign-starter/src/main/java/com/lcw/cloud/feign/configuration/FeignCustomAutoConfiguration.java
+/Users/liuchengwen/Desktop/liuchengwen/project/lcw-cloud/lcw-cloud-starters/lcw-cloud-feign-starter/src/main/java/com/lcw/cloud/feign/util/WebUtil.java
+/Users/liuchengwen/Desktop/liuchengwen/project/lcw-cloud/lcw-cloud-starters/lcw-cloud-feign-starter/src/main/java/com/lcw/cloud/feign/feign/RestTemplateHeaderInterceptor.java
+/Users/liuchengwen/Desktop/liuchengwen/project/lcw-cloud/lcw-cloud-starters/lcw-cloud-feign-starter/src/main/java/com/lcw/cloud/feign/util/ClassUtil.java
+/Users/liuchengwen/Desktop/liuchengwen/project/lcw-cloud/lcw-cloud-starters/lcw-cloud-feign-starter/src/main/java/com/lcw/cloud/feign/configuration/ExceptionErrorDecoder.java
+/Users/liuchengwen/Desktop/liuchengwen/project/lcw-cloud/lcw-cloud-starters/lcw-cloud-feign-starter/src/main/java/com/lcw/cloud/feign/feign/FeignRequestHeaderInterceptor.java
+/Users/liuchengwen/Desktop/liuchengwen/project/lcw-cloud/lcw-cloud-starters/lcw-cloud-feign-starter/src/main/java/com/lcw/cloud/feign/hystrix/HystrixAutoConfiguration.java
+/Users/liuchengwen/Desktop/liuchengwen/project/lcw-cloud/lcw-cloud-starters/lcw-cloud-feign-starter/src/main/java/com/lcw/cloud/feign/feign/HttpLoggingInterceptor.java
+/Users/liuchengwen/Desktop/liuchengwen/project/lcw-cloud/lcw-cloud-starters/lcw-cloud-feign-starter/src/main/java/com/lcw/cloud/feign/hystrix/FeignHystrixConcurrencyStrategy.java
+/Users/liuchengwen/Desktop/liuchengwen/project/lcw-cloud/lcw-cloud-starters/lcw-cloud-feign-starter/src/main/java/com/lcw/cloud/feign/hystrix/HttpHeadersCallable.java

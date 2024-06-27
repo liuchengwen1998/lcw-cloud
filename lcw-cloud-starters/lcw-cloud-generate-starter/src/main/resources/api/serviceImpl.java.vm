@@ -1,0 +1,49 @@
+#set($lowSysCode=${cfg.system.substring(0, 1).toLowerCase()}+${cfg.system.substring(1)})
+#set($lowModule=${className.substring(0,1 ).toLowerCase()} + ${className.substring(1)})
+#set($lowTableName=${apis[0].tableName.substring(0,1 ).toLowerCase()} + ${apis[0].tableName.substring(1)})
+package ${cfg.pkgs.ServiceImpl};
+
+import ${cfg.pkgs.Service}.${cfg.system}${className}Service;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import javax.annotation.Resource;
+#foreach($i in $imports)
+import $i;
+#end
+
+/**
+ * ${cfg.system}${className}Service
+ * 代码工具自动生成
+ * @author ${cfg.author}
+ * @since ${cfg.TIME}
+ */
+
+@Service
+public class ${cfg.system}${className}ServiceImpl implements ${cfg.system}${className}Service {
+
+    @Resource
+    private  ${apis[0].tableName}Mapper ${lowTableName}Mapper;
+
+    private ${cfg.system}${className}POConverter converter = ${cfg.system}${className}POConverter.INSTANCE;
+
+#foreach($api in ${apis})
+    #set($entityName=${cfg.system}+${api.noPrefixMethodName}+${api.methodPrefix})
+    /**
+    * ${api.methodDec}
+    */
+    #if(${api.dtoReturnType} == "void")
+    @Transactional(propagation = Propagation.REQUIRED)
+    #end
+    @Override
+    public ${api.dtoReturnType} ${api.methodName}(${entityName}ReqDTO dto){
+      #if(${entityName.toString().contains("Page")})
+        PageHelper.startPage(dto.getPageNum(), dto.getPageSize());
+        ${api.tableName}PO po = converter.to(dto);
+        Page<${api.tableName}PO> list = (Page)${lowTableName}Mapper.get${api.tableName}List(po);
+        return Pagination.of(list.getTotal(), converter.to${entityName}ResDTOList(list));
+      #elseif(${api.dtoReturnType} != "void")
+        return null;
+      #end
+    }
+#end
+}

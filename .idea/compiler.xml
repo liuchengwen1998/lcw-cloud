@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="lcw-cloud" target="1.8" />
+      <module name="lcw-cloud-core" target="1.8" />
+      <module name="lcw-cloud-dependencies" target="1.8" />
+      <module name="lcw-cloud-deploy-starter" target="1.8" />
+      <module name="lcw-cloud-feign-starter" target="1.8" />
+      <module name="lcw-cloud-generate-starter" target="1.8" />
+      <module name="lcw-cloud-job-starter" target="1.8" />
+      <module name="lcw-cloud-logger-starter" target="1.8" />
+      <module name="lcw-cloud-mq-starter" target="1.8" />
+      <module name="lcw-cloud-mybatis-starter" target="1.8" />
+      <module name="lcw-cloud-mybatisplus-starter" target="1.8" />
+      <module name="lcw-cloud-parent" target="1.8" />
+      <module name="lcw-cloud-redis-starter" target="1.8" />
+      <module name="lcw-cloud-sentinel-starter" target="1.8" />
+      <module name="lcw-cloud-starters" target="1.8" />
+      <module name="lcw-cloud-web-starter" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

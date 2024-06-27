@@ -1,0 +1,31 @@
+{
+  "groups": [
+    {
+      "name": "lcw.cloud.logger",
+      "type": "com.lcw.cloud.logger.configuration.LoggerProperties",
+      "sourceType": "com.lcw.cloud.logger.configuration.LoggerProperties"
+    },
+    {
+      "name": "lcw.cloud.logger.biz-err",
+      "type": "com.lcw.cloud.logger.configuration.LoggerProperties$BizErr",
+      "sourceType": "com.lcw.cloud.logger.configuration.LoggerProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "lcw.cloud.logger.biz-err.enable-print",
+      "type": "java.lang.Boolean",
+      "description": "是否输出日志堆栈信息,默认false，开发时可以打开",
+      "sourceType": "com.lcw.cloud.logger.configuration.LoggerProperties$BizErr",
+      "defaultValue": false
+    },
+    {
+      "name": "lcw.cloud.logger.biz-err.enable-print-trace-log",
+      "type": "java.lang.Boolean",
+      "description": "是否输出请求日志信息，默认是开启，可以关闭",
+      "sourceType": "com.lcw.cloud.logger.configuration.LoggerProperties$BizErr",
+      "defaultValue": true
+    }
+  ],
+  "hints": []
+}

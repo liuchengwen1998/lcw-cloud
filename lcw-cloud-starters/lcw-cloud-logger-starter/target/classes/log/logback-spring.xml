@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 彩色日志渲染 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <!-- 日志级别 -->
+    <springProperty name="log.root_level" source="lcw.cloud.logger.root.level" defaultValue="info"/>
+    <!-- 日志打印格式 -->
+    <springProperty name="log.pattern" source="lcw.cloud.logger.pattern" defaultValue="%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%5level) [%15.15thread] %clr(%-40.40c{39} [%4L]){cyan} : %msg%n"/>
+
+    <!--控制台输出 -->
+    <appender name="StdoutAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>${log.pattern}</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- 系统启动日志 -->
+    <root level="${log.root_level}">
+        <appender-ref ref="StdoutAppender"/>
+    </root>
+</configuration>

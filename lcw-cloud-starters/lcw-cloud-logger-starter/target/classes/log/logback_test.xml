@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 日志级别 -->
+    <springProperty name="log.root_level" source="lcw.cloud.logger.root.level" defaultValue="info"/>
+    <!-- 日志文件大小,超过这个大小将被压缩 -->
+    <springProperty name="log.max_file_size" source="lcw.cloud.logger.rollingpolicy.max-file-size"  defaultValue="250MB"/>
+    <!-- 最大保存历史记录 单位为天 -->
+    <springProperty name="log.max_history" source="lcw.cloud.logger.rollingpolicy.max-history" defaultValue="7"/>
+    <!-- 最大历史日志量 -->
+    <springProperty name="log.total_size_cap" source="lcw.cloud.logger.rollingpolicy.total-size-cap" defaultValue="1GB"/>
+    <!-- 启动时 是否清理历史日志 -->
+    <springProperty name="log.clean_history_on_start" source="lcw.cloud.logger.rollingpolicy.clean-history-on-start"
+                    defaultValue="false"/>
+    <!-- 日志路径，这里是相对路径 -->
+    <springProperty name="log.base" source="lcw.cloud.logger.base" defaultValue="/data/logs"/>
+    <!-- 日志打印格式 -->
+    <springProperty name="log.pattern" source="lcw.cloud.logger.pattern" defaultValue="%d{yyyy-MM-dd HH:mm:ss.SSS} |-%-5level [%thread] %c [%L] -|%msg%n"/>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%X{EagleEye-TraceID}] %d %p (%file:%line\)- %m%n</pattern>
+            <!-- 控制台也要使用UTF-8，不要使用GBK，否则会中文乱码 -->
+            <charset>UTF-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    <!-- 只用保存输出ERROR级别的日志 -->
+    <appender name="BizErrAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log.base}/error.log</File>
+        <!-- 滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件。 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <FileNamePattern>${log.base}/history/%d{yyyy-MM-dd}/error-%i.log.gz</FileNamePattern>
+            <!-- 历史日志保留天数 -->
+            <maxHistory>${log.max_history}</maxHistory>
+            <!-- 为当前归档日志下总量，非所有历史日志总量 -->
+            <totalSizeCap>${log.total_size_cap}</totalSizeCap>
+            <!-- 文件最大容量，超过自动归档 -->
+            <maxFileSize>${log.max_file_size}</maxFileSize>
+            <!-- 启动时是否清理日志 -->
+            <cleanHistoryOnStart>${log.clean_history_on_start}</cleanHistoryOnStart>
+        </rollingPolicy>
+
+        <!-- 日志输出的文件的格式 -->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${log.pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 业务日志 -->
+    <appender name="SysErrAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log.base}/SysErr.log</File>
+        <!-- 滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件。 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <FileNamePattern>${log.base}/history/%d{yyyy-MM-dd}/SysErr-%i.log.gz</FileNamePattern>
+            <!-- 历史日志保留天数 -->
+            <maxHistory>${log.max_history}</maxHistory>
+            <!-- 为当前归档日志下总量，非所有历史日志总量 -->
+            <totalSizeCap>${log.total_size_cap}</totalSizeCap>
+            <!-- 文件最大容量，超过自动归档 -->
+            <maxFileSize>${log.max_file_size}</maxFileSize>
+            <!-- 启动时是否清理日志 -->
+            <cleanHistoryOnStart>${log.clean_history_on_start}</cleanHistoryOnStart>
+        </rollingPolicy>
+
+        <!-- 日志输出的文件的格式 -->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                <!--                %X{EagleEye-TraceID} %d %p (%file:%line\)- %m%n-->
+                { "date":"%d{yyyy-MM-dd HH:mm:ss.SSS}","level":"%level","traceId":"%X{EagleEye-TraceID}","thread":"%thread","logger":"%logger{36}","service":"${applicationName}", "msg":"%msg", "exception":"%exception" }%n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- 下面为配置只输出error级别的日志,等三方包日志信息 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 业务日志 -->
+    <appender name="BizAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log.base}/info.log</File>
+        <!-- 滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件。 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <FileNamePattern>${log.base}/history/%d{yyyy-MM-dd}/info-%i.log.gz</FileNamePattern>
+            <!-- 历史日志保留天数 -->
+            <maxHistory>${log.max_history}</maxHistory>
+            <!-- 为当前归档日志下总量，非所有历史日志总量 -->
+            <totalSizeCap>${log.total_size_cap}</totalSizeCap>
+            <!-- 文件最大容量，超过自动归档 -->
+            <maxFileSize>${log.max_file_size}</maxFileSize>
+            <!-- 启动时是否清理日志 -->
+            <cleanHistoryOnStart>${log.clean_history_on_start}</cleanHistoryOnStart>
+        </rollingPolicy>
+
+        <!-- 日志输出的文件的格式 -->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                <!--                %X{EagleEye-TraceID} %d %p (%file:%line\)- %m%n-->
+                { "date":"%d{yyyy-MM-dd HH:mm:ss.SSS}","level":"%level","traceId":"%X{EagleEye-TraceID}","thread":"%thread","logger":"%logger{36}","service":"${applicationName}", "msg":"%msg", "exception":"%exception" }%n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 只用保存输出ERROR级别的日志 -->
+    <appender name="AppAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log.base}/App.log</File>
+        <!-- 滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件。 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <FileNamePattern>${log.base}/history/%d{yyyy-MM-dd}/App-%i.log.gz</FileNamePattern>
+            <!-- 历史日志保留天数 -->
+            <maxHistory>${log.max_history}</maxHistory>
+            <!-- 为当前归档日志下总量，非所有历史日志总量 -->
+            <totalSizeCap>${log.total_size_cap}</totalSizeCap>
+            <!-- 文件最大容量，超过自动归档 -->
+            <maxFileSize>${log.max_file_size}</maxFileSize>
+            <!-- 启动时是否清理日志 -->
+            <cleanHistoryOnStart>${log.clean_history_on_start}</cleanHistoryOnStart>
+        </rollingPolicy>
+
+        <!-- 日志输出的文件的格式 -->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${log.pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- 下面配置 只输出error基本以下的日志信息，error以上的日志信息，由SysErrAppender 输出-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 包含业务异常日志 -->
+    <logger name="com.lcw.cloud.core.logger.bizerr" level="${log.root_level}" additivity="false">
+        <appender-ref ref="BizErrAppender"/>
+    </logger>
+
+    <!-- 包含业务日志 -->
+    <logger name="com.lcw.cloud.core.logger.biz" level="${log.root_level}" additivity="false">
+        <appender-ref ref="BizAppender"/>
+    </logger>
+
+    <!-- 包含自身系统异常日志 -->
+    <logger name="com.lcw.cloud.core.logger.syserr" level="${log.root_level}" additivity="false">
+        <appender-ref ref="SysErrAppender"/>
+    </logger>
+
+    <!-- 系统启动日志 -->
+    <root level="${log.root_level}">
+        <!-- 输出error及以上日志信息 -->
+        <appender-ref ref="SysErrAppender"/>
+        <!-- 输出info及以下日志信息 -->
+        <appender-ref ref="AppAppender" />
+        <appender-ref ref="BizAppender" />
+        <appender-ref ref="BizErrAppender" />
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${package.Mapper}.${table.mapperName}">
+
+#if(${baseResultMap})
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="${package.Entity}.${entity}PO">
+#foreach($field in ${table.fields})
+#if(${field.keyFlag})##生成主键排在第一位
+        <id column="${field.name}" property="${field.propertyName}" jdbcType="BIGINT"/>
+#end
+#end
+#foreach($field in ${table.fields})
+#if(!${field.keyFlag})##生成普通字段
+    #if($field.columnType == "STRING")
+    <result column="${field.name}" property="${field.propertyName}" jdbcType="VARCHAR"/>
+    #elseif($field.columnType == "LONG")
+    <result column="${field.name}" property="${field.propertyName}" jdbcType="BIGINT"/>
+    #elseif($field.columnType == "BIG_DECIMAL")
+    <result column="${field.name}" property="${field.propertyName}" jdbcType="DECIMAL"/>
+    #elseif($field.columnType == "INTEGER")
+    <result column="${field.name}" property="${field.propertyName}" jdbcType="INTEGER"/>
+    #elseif($field.columnType == "DOUBLE")
+    <result column="${field.name}" property="${field.propertyName}" jdbcType="DOUBLE"/>
+    #elseif($field.columnType == "TIMESTAMP")
+    <result column="${field.name}" property="${field.propertyName}" jdbcType="TIMESTAMP"/>
+    #elseif($field.columnType == "DATE")
+    <result column="${field.name}" property="${field.propertyName}" jdbcType="TIMESTAMP"/>
+    #elseif($field.columnType == "DECIMAL")
+    <result column="${field.name}" property="${field.propertyName}" jdbcType="DECIMAL"/>
+    #end
+#end
+#end
+	</resultMap>
+
+#end
+#if(${baseColumnList})
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        #foreach($field in ${table.fields})${field.name}#if($foreach.hasNext),#end #end
+    </sql>
+#end
+
+    <!--  通过ID来获取对象 -->
+    <select id="get${entity}ById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM ${table.name} WHERE id = #{id}
+    </select>
+
+    <!-- 通过实体来查询分页列表 -->
+    <select id="get${entity}List" resultMap="BaseResultMap"
+            parameterType="${package.Entity}.${entity}PO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM ${table.name}
+        <trim prefix="where" prefixOverrides="AND|OR">
+#foreach($field in ${table.fields})
+    #if(${field.propertyName} != "updateUserId" && ${field.propertyName} != "updateDate" && ${field.propertyName} != "updateTime" &&
+        ${field.propertyName} != "createUserId" && ${field.propertyName} != "createDate" && ${field.propertyName} != "createTime")
+        #if(${field.propertyType} == 'Long' || ${field.propertyType} == 'Integer' || ${field.propertyType} == 'Date' || ${field.propertyType} == 'BigDecimal')
+            <if test="${field.propertyName} !=null">AND ${field.name} = #{${field.propertyName}}</if>
+        #else
+            <if test='${field.propertyName} !=null and ${field.propertyName} !=""'>AND ${field.name} = #{${field.propertyName}}</if>
+        #end
+    #end
+#end
+        </trim>
+        <trim prefix="ORDER BY ">
+            <if test="sort !=null and sort != ''">
+                ${sort}
+            </if>
+        </trim>
+    </select>
+
+
+    <!-- 根据ID删除 -->
+    <delete id="delete${entity}ById" parameterType="java.lang.Long">
+        DELETE FROM ${table.name}
+    <trim prefix="where" prefixOverrides="AND|OR">
+     AND id = #{id}
+#foreach($field in ${table.fields})
+    #if(${field.propertyName} == "custCode")
+        <if test='${field.propertyName} !=null  and ${field.propertyName} !=""'>AND ${field.name} = #{${field.propertyName}}</if>
+    #end
+#end
+    </trim>
+
+    </delete>
+
+    <!-- 根据ID更新 -->
+    <update id="update${entity}ById" parameterType="${package.Entity}.${entity}PO">
+        UPDATE ${table.name}
+        <set>
+#foreach($field in ${table.fields})
+    #if(${field.propertyName} != "updateUserId" && ${field.propertyName} != "updateDate" && ${field.propertyName} != "updateTime" &&
+        ${field.propertyName} != "createUserId" && ${field.propertyName} != "createDate" && ${field.propertyName} != "createTime" && ${field.propertyName} != "custCode" )
+        #if(${field.propertyType} == 'Long' || ${field.propertyType} == 'Integer' || ${field.propertyType} == 'Date' || ${field.propertyType} == 'BigDecimal')
+            #if(${field.propertyName} != 'id')
+            <if test="${field.propertyName} !=null">${field.name} = #{${field.propertyName}},</if>
+            #end
+        #else
+            <if test='${field.propertyName} !=null and ${field.propertyName} !=""'>${field.name} = #{${field.propertyName}},</if>
+        #end
+    #end
+#end
+            update_time = now()
+        </set>
+      <trim prefix="where" prefixOverrides="AND|OR">
+        AND id = #{id}
+          #foreach($field in ${table.fields})
+              #if(${field.propertyName} == "custCode")
+                <if test='${field.propertyName} !=null  and ${field.propertyName} !=""'>AND ${field.name} = #{${field.propertyName}}</if>
+              #end
+          #end
+      </trim>
+    </update>
+
+    <!--保存-->
+    <insert id="save${entity}" parameterType="${package.Entity}.${entity}PO"  useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO ${table.name}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+    #foreach($field in ${table.fields})
+        #if(${field.keyFlag})##生成主键排在第一位
+        #else
+            #if(${field.propertyName} != "createUserId" && ${field.propertyName} != "createDate" && ${field.propertyName} != "createTime"
+                && ${field.propertyName} != "updateUserId" && ${field.propertyName} != "updateDate" && ${field.propertyName} != "updateTime")
+                #if(${field.propertyType} == 'Long' || ${field.propertyType} == 'Integer' || ${field.propertyType} == 'Date' || ${field.propertyType} == 'BigDecimal')
+            <if test="${field.propertyName} !=null">${field.name},</if>
+                #else
+            <if test='${field.propertyName} !=null and ${field.propertyName} !=""'>${field.name},</if>
+                #end
+            #end
+        #end
+    #end
+            create_time, update_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+#foreach($field in ${table.fields})
+#if(${field.keyFlag})##生成主键排在第一位
+#else
+    #if(${field.propertyName} != "createUserId" && ${field.propertyName} != "createDate" && ${field.propertyName} != "createTime"
+    && ${field.propertyName} != "updateUserId" && ${field.propertyName} != "updateDate" && ${field.propertyName} != "updateTime")
+        #if(${field.propertyType} == 'Long' || ${field.propertyType} == 'Integer' || ${field.propertyType} == 'Date' || ${field.propertyType} == 'BigDecimal')
+            <if test="${field.propertyName} !=null">#{${field.propertyName}},</if>
+        #else
+            <if test='${field.propertyName} !=null and ${field.propertyName} !=""'>#{${field.propertyName}},</if>
+        #end
+    #end
+#end
+#end
+            now(),now()
+        </trim>
+    </insert>
+
+    <!--批量保存-->
+    <insert id="save${entity}List" parameterType="java.util.List">
+        INSERT INTO ${table.name}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+#foreach($field in ${table.fields})
+    #if(${field.keyFlag})##生成主键排在第一位
+    #else
+        #if(${field.propertyName} != "createUserId" && ${field.propertyName} != "createDate" && ${field.propertyName} != "createTime"
+        && ${field.propertyName} != "updateUserId" && ${field.propertyName} != "updateDate" && ${field.propertyName} != "updateTime")
+            ${field.name},
+        #end
+    #end
+#end
+            create_time, update_time
+        </trim>
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+#foreach($field in ${table.fields})
+    #if(${field.keyFlag})##生成主键排在第一位
+    #else
+        #if(${field.propertyName} != "createUserId" && ${field.propertyName} != "createDate" && ${field.propertyName} != "createTime"
+        && ${field.propertyName} != "updateUserId" && ${field.propertyName} != "updateDate" && ${field.propertyName} != "updateTime")
+            #{item.${field.propertyName}},
+        #end
+    #end
+#end
+            now(),now()
+            )
+        </foreach>
+    </insert>
+</mapper>

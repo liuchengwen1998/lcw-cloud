@@ -1,0 +1,63 @@
+package ${package.Mapper};
+
+import ${package.Entity}.${entity}PO;
+import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+/**
+ * ${table.comment} Mapper 接口
+ * 
+ * @author ${author}
+ * @since ${cfg.TIME}
+ */
+@Mapper
+public interface ${table.mapperName} {
+
+    /**
+     * 查询列表集合
+     *
+     * @param bean
+     * @return
+     */
+    List<${entity}PO> get${entity}List(${entity}PO bean);
+
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    ${entity}PO get${entity}ById(@Param("id") Long id);
+
+    /**
+     * 新增
+     *
+     * @param bean
+     */
+    Integer save${entity}(${entity}PO bean);
+
+    /**
+     * 批量新增
+     *
+     * @param beans
+     */
+    Integer save${entity}List(List<${entity}PO> beans);
+
+    /**
+     * 根据ID修改
+     *
+     * @param bean
+     */
+    Integer update${entity}ById(${entity}PO bean);
+
+    /**
+     * 根据ID删除
+     *
+     * @param id
+     */
+    Integer delete${entity}ById(@Param("id") Long id);
+
+}

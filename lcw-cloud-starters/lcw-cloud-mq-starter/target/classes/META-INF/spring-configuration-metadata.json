@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "lcw.rocketmq",
+      "type": "com.lcw.cloud.mq.configuration.props.RocketPropertiesConfig",
+      "sourceType": "com.lcw.cloud.mq.configuration.props.RocketPropertiesConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "lcw.rocketmq.list",
+      "type": "java.util.List<com.lcw.cloud.mq.configuration.props.RocketProperties>",
+      "sourceType": "com.lcw.cloud.mq.configuration.props.RocketPropertiesConfig"
+    }
+  ],
+  "hints": []
+}

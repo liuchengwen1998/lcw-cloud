@@ -1,0 +1,11 @@
+#PAGEHELPER CONFIG
+pagehelper:
+  helper-dialect: mysql
+  reasonable: false
+  support-methods-arguments: false
+  params: count=countSql
+  auto-runtime-dialect: true
+
+#MYBATIS CONFIG
+mybatis:
+  mapper-locations: classpath*:/mapper/*Mapper.xml

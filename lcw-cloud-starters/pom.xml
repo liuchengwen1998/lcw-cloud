@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>lcw-cloud-parent</artifactId>
+        <groupId>com.lcw</groupId>
+        <version>${revision}</version>
+        <relativePath>../lcw-cloud-parent</relativePath>
+    </parent>
+    <modules>
+        <module>lcw-cloud-web-starter</module>
+        <module>lcw-cloud-logger-starter</module>
+        <module>lcw-cloud-redis-starter</module>
+        <module>lcw-cloud-feign-starter</module>
+        <module>lcw-cloud-mybatisplus-starter</module>
+        <module>lcw-cloud-mybatis-starter</module>
+        <module>lcw-cloud-sentinel-starter</module>
+        <module>lcw-cloud-mq-starter</module>
+        <module>lcw-cloud-job-starter</module>
+        <module>lcw-cloud-generate-starter</module>
+        <module>lcw-cloud-deploy-starter</module>
+    </modules>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+
+    <artifactId>lcw-cloud-starters</artifactId>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+    </dependencies>
+</project>

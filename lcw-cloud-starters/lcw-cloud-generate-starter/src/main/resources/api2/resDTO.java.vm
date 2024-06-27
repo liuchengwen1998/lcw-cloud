@@ -1,0 +1,8 @@
+package ${cfg.pkgs.ServiceResDTO};
+
+import lombok.Data;
+
+@Data
+public class ${className} {
+
+}

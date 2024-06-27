@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.lcw</groupId>
+        <artifactId>lcw-cloud-starters</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>lcw-cloud-sentinel-starter</artifactId>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>com.lcw</groupId>
+            <artifactId>lcw-cloud-logger-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.lcw</groupId>
+            <artifactId>lcw-cloud-feign-starter</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
+
+        <!--声明使用nacos数据源-->
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-datasource-nacos</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

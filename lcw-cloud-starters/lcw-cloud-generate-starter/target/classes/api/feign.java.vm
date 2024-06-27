@@ -1,0 +1,40 @@
+#set($lowModule=${className.substring(0,1 ).toLowerCase()} + ${className.substring(1)})
+#set($lowSysCode=${cfg.system.substring(0, 1).toLowerCase()}+${cfg.system.substring(1)})
+
+package ${cfg.pkgs.Feign};
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.cloud.openfeign.SpringQueryMap;
+#foreach($i in $imports)
+import $i;
+#end
+import com.ygl.cloud.core.rest.entity.Result;
+
+/**
+ * ${cfg.system}${className}Controller
+ * @author ${cfg.author}
+ * @since ${cfg.TIME}
+ */
+
+@FeignClient(name = "ygl-${cfg.systemOrigin}", contextId = "${cfg.system}${className}Client")
+public interface ${cfg.system}${className}Client {
+
+#foreach($api in ${apis})
+    #set($entityName=${cfg.system}+${api.noPrefixMethodName}+${api.methodPrefix})
+    /**
+    * ${api.methodDec}
+    */
+#if(${api.methodName.toString().contains("get")})
+   @GetMapping("${api.url}")
+   public Result<${api.VoName}> ${api.methodName}(@SpringQueryMap @Validated ${entityName}IO io);
+#else
+   @PostMapping("${api.url}")
+   public Result<${api.VoName}> ${api.methodName}(@RequestBody ${entityName}IO io);
+#end
+
+#end
+
+}

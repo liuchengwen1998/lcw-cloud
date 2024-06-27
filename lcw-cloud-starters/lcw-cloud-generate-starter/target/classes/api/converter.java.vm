@@ -1,0 +1,49 @@
+#set($lowSysCode=${cfg.system.substring(0, 1).toLowerCase()}+${cfg.system.substring(1)})
+#set($lowModule=${className.substring(0,1 ).toLowerCase()} + ${className.substring(1)})
+package ${cfg.pkgs.Converter};
+
+    #foreach($i in $imports)
+import $i;
+    #end
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+/**
+ * ${cfg.system}${className}POConverter
+ *
+ * @author ${cfg.author}
+ * @since ${cfg.TIME}
+ */
+@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+public interface  ${cfg.system}${className}POConverter {
+
+    ${cfg.system}${className}POConverter INSTANCE = Mappers.getMapper(${cfg.system}${className}POConverter.class);
+#foreach($api in ${apis})
+#set($entityName=${cfg.system}+${api.noPrefixMethodName}+${api.methodPrefix})
+## 入参转换
+  /**
+  * ${entityName}ReqDTO 转成PO对象
+  * @param reqDto 待转换对象
+  * @return
+  */
+  ${api.tableName}PO to(${entityName}ReqDTO reqDto);
+#if(${api.voName} != "String" )
+
+    ## 分页查询，需要提供对象及list转换
+  /**
+   * PO 转成 ${entityName}ResDTO  对象
+   * @param po 转转PO对象
+   * @return ${entityName}ResDTO 对象
+   */
+    ${entityName}ResDTO to${entityName}ResDTO(${api.tableName}PO po);
+
+  /**
+   * List PO 转成List ${entityName}ResDTO  对象
+   * @param list 待转Po对象集合
+   * @return ${entityName}ResDTO 对象集合
+   */
+    List<${entityName}ResDTO> to${entityName}ResDTOList(List<${api.tableName}PO> list);
+#end
+#end
+}

@@ -1,0 +1,67 @@
+#set($lowModule=${className.substring(0,1 ).toLowerCase()} + ${className.substring(1)})
+
+package ${cfg.pkgs.Controller};
+
+import com.ygl.${cfg.systemOrigin}.BaseController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import ${cfg.pkgs.Service}.${className}Service;
+import ${cfg.pkgs.Assembler}.${className}DTOAssembler;
+#foreach($i in $imports)
+import $i;
+#end
+import com.ygl.cloud.core.rest.entity.Result;
+
+import javax.annotation.Resource;
+
+/**
+ * ${className}Controller
+ * @author ${cfg.author}
+ * @since ${cfg.TIME}
+ */
+
+@RestController
+public class ${className}Controller extends BaseController {
+
+  @Resource
+  private ${className}Service ${lowModule}Service;
+
+  ${className}DTOAssembler assembler =  ${className}DTOAssembler.INSTANCE;
+
+#foreach($api in ${apis})
+    #set($entityName=${api.noPrefixMethodName}+${api.methodPrefix})
+/**
+* ${api.methodDec}
+*/
+#if(${api.methodName.toString().contains("get")})
+  @GetMapping("${api.url}")
+  public Result<${api.VoName}> ${api.methodName}(@Validated ${entityName}IO io) {
+#else
+  @PostMapping("${api.url}")
+  public Result<${api.VoName}> ${api.methodName}(@RequestBody @Validated ${entityName}IO io) {
+#end
+    ${entityName}ReqDTO reqDto = assembler.to(io);
+#if(${api.VoName} == 'String')
+    ${lowModule}Service.${api.methodName}(reqDto);
+    return Result.success();
+#elseif(${api.methodName.contains("Page")})
+    Pagination<${entityName}ResDTO> dtoList = ${lowModule}Service.${api.methodName}(reqDto);
+    List<${entityName}VO> voList = assembler.to${entityName}VOList(dtoList.getList());
+    Pagination<${entityName}VO> resList = Pagination.of(dtoList.getTotal(), voList);
+    return Result.success(resList);
+#elseif(${api.methodName.contains("List")})
+    List<${entityName}ResDTO> dtoList = ${lowModule}Service.${api.methodName}(reqDto);
+    List<${entityName}VO> voList = assembler.to${entityName}VOList(dtoList);
+    return Result.success(voList);
+#else
+    ${entityName}ResDTO resDto = ${lowModule}Service.${api.methodName}(reqDto);
+    ${entityName}VO vo = assembler.to(resDto);
+    return Result.success(vo);
+#end
+    }
+#end
+
+}

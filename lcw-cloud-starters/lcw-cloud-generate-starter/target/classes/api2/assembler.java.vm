@@ -1,0 +1,49 @@
+#set($lowModule=${className.substring(0,1 ).toLowerCase()} + ${className.substring(1)})
+package ${cfg.pkgs.Assembler};
+
+    #foreach($i in $imports)
+import $i;
+    #end
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+/**
+ * ${className}DTOAssembler
+ *
+ * @author ${cfg.author}
+ * @since ${cfg.TIME}
+ */
+@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+public interface ${className}DTOAssembler {
+
+  ${className}DTOAssembler INSTANCE = Mappers.getMapper(${className}DTOAssembler.class);
+#foreach($api in ${apis})
+    #set($entityName=${api.noPrefixMethodName}+${api.methodPrefix})
+## 入参转换
+
+  /**
+   * ${entityName}IO 转成  ${entityName}ReqDTO 对象
+   * @param io 待转IO对象
+   * @return ${entityName}ReqDTO
+   */
+    ${entityName}ReqDTO to(${entityName}IO io);
+#if(${api.voName} != "String" )
+
+## 分页查询，需要提供对象及list转换
+  /**
+   * ${entityName}ResDTO 转成  ${entityName}VO  对象
+   * @param resDTO 待转ResDTO对象
+   * @return ${entityName}VO对象
+   */
+    ${entityName}VO to(${entityName}ResDTO resDTO);
+
+    /**
+   * List ${entityName}ResDTO 转成List ${entityName}VO  对象
+   * @param list 待转ResDTO对象
+   * @return 对象VO对象集合
+   */
+    List<${entityName}VO> to${entityName}VOList(List<${entityName}ResDTO> list);
+#end
+  #end
+}

@@ -1,0 +1,27 @@
+#set($lowSysCode=${cfg.system.substring(0, 1).toLowerCase()}+${cfg.system.substring(1)})
+#set($lowModule=${className.substring(0,1 ).toLowerCase()} + ${className.substring(1)})
+package ${cfg.pkgs.Service};
+
+    #foreach($i in $imports)
+import $i;
+    #end
+import javax.validation.constraints.NotNull;
+/**
+ * ${cfg.system}${className}Service
+ * 代码工具自动生成
+ * @author ${cfg.author}
+ * @since ${cfg.TIME}
+ */
+
+
+public interface  ${cfg.system}${className}Service  {
+
+#foreach($api in ${apis})
+    #set($entityName=${cfg.system}+${api.noPrefixMethodName}+${api.methodPrefix})
+    /**
+    * ${api.methodDec}
+    */
+    public ${api.dtoReturnType} ${api.methodName}(${entityName}ReqDTO dto);
+
+#end
+}

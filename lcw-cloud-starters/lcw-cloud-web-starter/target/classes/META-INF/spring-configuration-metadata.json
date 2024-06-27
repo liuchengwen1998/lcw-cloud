@@ -1,0 +1,32 @@
+{
+  "groups": [
+    {
+      "name": "ygl.security",
+      "type": "com.lcw.cloud.web.security.filter.SecurityProperties",
+      "sourceType": "com.lcw.cloud.web.security.filter.SecurityProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "ygl.security.open-sign",
+      "type": "java.lang.Boolean",
+      "description": "开启验签",
+      "sourceType": "com.lcw.cloud.web.security.filter.SecurityProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "ygl.security.url-decision-enable",
+      "type": "java.lang.Boolean",
+      "description": "是否开启URL权限认证，默认开启，只有开发和测试的时候可以关闭",
+      "sourceType": "com.lcw.cloud.web.security.filter.SecurityProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "ygl.security.white-list",
+      "type": "java.util.List<java.lang.String>",
+      "description": "白名单列表",
+      "sourceType": "com.lcw.cloud.web.security.filter.SecurityProperties"
+    }
+  ],
+  "hints": []
+}

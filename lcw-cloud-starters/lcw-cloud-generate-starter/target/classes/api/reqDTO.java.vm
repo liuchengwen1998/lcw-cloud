@@ -1,0 +1,19 @@
+package ${cfg.pkgs.ServiceReqDTO};
+
+import lombok.Data;
+#if(${className.toString().contains("Page")})
+import com.ygl.cloud.core.entity.BaseReq;
+#elseif(${className.toString().contains("Update")})
+import com.ygl.cloud.core.entity.PostIdReq;
+#else
+#end
+
+@Data
+#if(${className.toString().contains("Page")})
+public class ${cfg.system}${className} extends BaseReq{
+#elseif(${className.toString().contains("Update")})
+public class ${cfg.system}${className} extends PostIdReq{
+#else
+public class ${cfg.system}${className} {
+#end
+}

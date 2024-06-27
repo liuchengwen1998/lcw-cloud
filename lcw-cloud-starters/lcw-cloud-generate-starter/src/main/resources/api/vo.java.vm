@@ -1,0 +1,7 @@
+package ${cfg.pkgs.IoRes};
+import lombok.Data;
+
+@Data
+public class ${cfg.system}${className} {
+
+}

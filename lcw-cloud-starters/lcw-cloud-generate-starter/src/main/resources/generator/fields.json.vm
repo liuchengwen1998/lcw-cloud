@@ -1,0 +1,8 @@
+{
+## ----------  BEGIN 字段循环遍历  ----------
+#foreach($field in ${table.fields})
+  "${field.propertyName}" :"",
+#end
+## ----------  END 字段循环遍历  ----------
+
+}
